@@ -19,8 +19,26 @@ GitHub SSH key가 없는 machine에서는 `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1`을
 |---|---|---|
 | `SessionStart` hook | session 시작, `/clear`, compaction 때 쓰기 규칙 4줄(`hooks/writing-rules.md`)을 context에 넣습니다 | session마다 약 800자 |
 | `readable-prose` skill | 글을 고쳐 쓸 때 구조를 바꾸고(결론 먼저, label 붙은 목록, 한 문장에 판정 하나) 원문과 대조해 사실을 지킵니다 | skill을 부를 때 약 3,300자 |
+| `PreToolUse` hook | commit message나 GitHub 게시물을 쓰는 Bash 명령을, 그 turn에 skill을 부르기 전까지 막습니다 | 막을 때만 한 줄 |
 
-skill은 "읽기 쉽게", "AI 문체", "다듬어", "make this readable" 같은 요청이나 PR body, commit message, review 답글을 게시하기 전에 불립니다. 직접 부르려면 `/readable-prose:readable-prose`를 씁니다.
+skill은 "읽기 쉽게", "AI 문체", "다듬어", "make this readable" 같은 요청에 불립니다. 직접 부르려면 `/readable-prose:readable-prose`를 씁니다.
+
+작업 도중에 commit하거나 게시할 때는 skill이 잘 불리지 않습니다. 그래서 `PreToolUse` hook이 아래 명령을 막고 skill을 먼저 부르라고 알립니다. 한 turn에서 skill을 한 번 부르면 그 turn의 나머지 명령은 막지 않습니다.
+
+- `git commit -m`, `git commit -F` (`--amend --no-edit`처럼 message를 새로 쓰지 않는 commit은 막지 않습니다)
+- `gh pr create`, `gh issue create`, `gh pr comment`, `gh issue comment`
+- `--body`가 붙은 `gh pr review`, `gh pr edit`, `gh issue edit`
+- field나 `--input`을 보내는 `gh api .../comments`, `gh api .../reviews`
+
+이 hook을 끄려면 `READABLE_PROSE_GATE=0`을 설정합니다. hook은 `python3`를 쓰고, `python3`가 없거나 오류가 나면 명령을 막지 않습니다.
+
+## skill이 불리는지 확인한 결과
+
+`claude plugin eval`(`evals/`)과 실제 설정에서 띄운 `claude -p`로 쟀습니다.
+
+- 글을 써 달라는 요청(PR 본문, commit message, review 답글, 보고서, 고쳐 쓰기): 모두 불렸습니다.
+- 관계없는 질문(code 질문, 계산, 개념 설명): 한 번도 불리지 않았습니다.
+- 코드를 고친 뒤 "commit해 주세요": hook이 없을 때는 3번 중 1번 불렸고, hook을 넣은 뒤에는 6번 모두 불렸습니다.
 
 ## 근거
 
