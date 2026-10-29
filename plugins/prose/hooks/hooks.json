@@ -16,6 +16,12 @@
         "hooks": [
           {
             "type": "command",
+            "if": "Bash(git *)",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}\"/hooks/require-skill.py"
+          },
+          {
+            "type": "command",
+            "if": "Bash(gh *)",
             "command": "python3 \"${CLAUDE_PLUGIN_ROOT}\"/hooks/require-skill.py"
           }
         ]
