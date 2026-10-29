@@ -1,11 +1,11 @@
 {
   "name": "readable-prose",
-  "description": "readable-prose plugin for Claude Code",
+  "description": "prose plugin for Claude Code",
   "owner": { "name": "Daejun", "url": "https://github.com/Daejun" },
   "plugins": [
     {
-      "name": "readable-prose",
-      "source": "./plugins/readable-prose",
+      "name": "prose",
+      "source": "./plugins/prose",
       "description": "Structure-first rewriting with fact guards, plus session-start writing rules"
     }
   ]

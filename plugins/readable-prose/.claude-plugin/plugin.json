@@ -1,9 +1,0 @@
-{
-  "name": "readable-prose",
-  "version": "0.2.0",
-  "description": "Write and rewrite prose so a human gets it on the first read: structure first (conclusion first, labeled lists, one claim per sentence), then guard the facts. Korean-first, works for English commit messages and PR bodies.",
-  "author": { "name": "Daejun", "url": "https://github.com/Daejun" },
-  "repository": "https://github.com/Daejun/readable-prose",
-  "license": "MIT",
-  "keywords": ["writing", "readability", "korean", "prose"]
-}
