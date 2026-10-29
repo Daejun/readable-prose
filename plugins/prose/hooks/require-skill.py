@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""PreToolUse gate: a Bash command that writes a commit message or posts to
-GitHub is denied until the prose:readable skill has run in the current turn.
+"""PreToolUse gate: a Bash command that posts to GitHub is denied until the
+prose:readable skill has run in the current turn.
 
 Set READABLE_PROSE_GATE=0 to turn the gate off. Any error lets the command
 through.
@@ -11,8 +11,6 @@ import re
 import sys
 
 POSTING = [
-    # git commit with a message of its own (-m, -F, --message, --file)
-    re.compile(r"\bgit\b[^|;&\n]*\bcommit\b[^|;&\n]*(\s-[a-zA-Z]*[mF]|\s--message|\s--file)"),
     re.compile(r"\bgh\s+(pr|issue)\s+(create|comment)\b"),
     re.compile(r"\bgh\s+pr\s+review\b[^|;&\n]*(\s-b\b|\s--body)"),
     re.compile(r"\bgh\s+(pr|issue)\s+edit\b[^|;&\n]*(\s-b\b|\s--body)"),
@@ -25,7 +23,7 @@ SKILL_NAMES = ("prose:readable", "readable")
 SLASH = re.compile(r"<command-name>/(prose:)?readable</command-name>")
 
 REASON = (
-    "prose: 이 명령은 commit message나 게시물을 씁니다. "
+    "prose: 이 명령은 GitHub에 글을 올립니다. "
     "prose:readable skill을 먼저 불러 글을 고치고 "
     "원문과 사실을 대조한 뒤 같은 명령을 다시 실행하세요. "
     "이 turn에서 skill을 한 번 부르면 이후 명령은 막지 않습니다."
