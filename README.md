@@ -18,7 +18,7 @@ GitHub SSH key가 없는 machine에서는 `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1`을
 | 구성 | 하는 일 | context 비용 |
 |---|---|---|
 | `SessionStart` hook | session 시작, `/clear`, compaction 때 쓰기 규칙 5줄(`hooks/writing-rules.md`)을 context에 넣습니다 | session마다 약 1,000자 |
-| `readable` skill | 글을 고쳐 쓸 때 구조를 바꾸고(결론 먼저, label 붙은 목록, 한 문장에 판정 하나) 원문과 대조해 사실을 지킵니다 | skill을 부를 때 약 3,300자 |
+| `readable` skill | 글을 고쳐 쓸 때 구조를 바꾸고(결론 먼저, label 붙은 목록, 한 문장에 판정 하나) 한국어 번역투를 고친 뒤, 원문과 대조해 사실을 지킵니다 | skill을 부를 때 약 4,600자 |
 | `PreToolUse` hook | GitHub에 글을 올리는 `gh` 명령을, 그 turn에 skill을 부르기 전까지 막습니다 | 막을 때만 한 줄 |
 
 skill은 "읽기 쉽게", "AI 문체", "다듬어", "make this readable" 같은 요청에 불립니다. 직접 부르려면 `/prose:readable`을 씁니다.
